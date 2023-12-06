@@ -107,7 +107,7 @@ class _MyAppState extends State<MyApp> {
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400,
                                           color: Colors.black)),
-                                  backgroundColor: Color(0xffF92049),
+                                  backgroundColor: Color(0xffFFB6C1),
                                   duration: Duration(seconds: 1),
                                 ));
                               });
