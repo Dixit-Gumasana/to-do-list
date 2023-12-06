@@ -13,6 +13,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  final _messangerKey = GlobalKey<ScaffoldMessengerState>();
+
+
   TextEditingController _controller = TextEditingController();
 
   List items = [];
@@ -20,6 +23,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scaffoldMessengerKey: _messangerKey,
+
+
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
@@ -48,6 +54,16 @@ class _MyAppState extends State<MyApp> {
                           setState(() {
                             items.add(_controller.text);
                             _controller.clear();
+                            _messangerKey.currentState?.showSnackBar(
+                                SnackBar(content: Text('Task Added Succesfully',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: Colors.white
+                                )),
+                                  backgroundColor: Color(0xff3695f7),
+                                ));
+
                           });
                         },
                         icon: Icon(Icons.add)),
@@ -85,6 +101,16 @@ class _MyAppState extends State<MyApp> {
                             onPressed: () {
                               setState(() {
                                 items.removeAt(index);
+                                _messangerKey.currentState?.showSnackBar(
+                                    SnackBar(content: Text('Task Deleted',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.black
+                                    )),
+                                      backgroundColor: Color(0xffF92049),
+                                    ));
+
                               });
                             },
                             icon: Icon(Icons.delete),
