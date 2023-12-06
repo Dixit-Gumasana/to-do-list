@@ -33,9 +33,9 @@ class _MyAppState extends State<MyApp> {
                 color: Colors.black54),
           ),
           centerTitle: true,
-          backgroundColor: Colors.cyan,
+          backgroundColor: Color(0xff36D1DC),
         ),
-        backgroundColor: Color(0xffb5cfe8),
+        backgroundColor: Color(0xfff2fcfe),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                             items.add(_controller.text);
                             _controller.clear();
                             _messangerKey.currentState?.showSnackBar(SnackBar(
-                              content: Text('Task Added Succesfully',
+                              content: Text('Task Added Succesfully !!',
                                   style: TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w400,
@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> {
                                 items.removeAt(index);
                                 _messangerKey.currentState
                                     ?.showSnackBar(SnackBar(
-                                  content: Text('Task Deleted',
+                                  content: Text('Task Deleted !',
                                       style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400,
