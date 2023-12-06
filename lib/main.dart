@@ -12,9 +12,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   final _messangerKey = GlobalKey<ScaffoldMessengerState>();
-
 
   TextEditingController _controller = TextEditingController();
 
@@ -24,15 +22,15 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       scaffoldMessengerKey: _messangerKey,
-
-
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
           title: Text(
             'To Do List',
             style: TextStyle(
-                fontSize: 25, fontWeight: FontWeight.w600, color: Colors.black54),
+                fontSize: 25,
+                fontWeight: FontWeight.w600,
+                color: Colors.black54),
           ),
           centerTitle: true,
           backgroundColor: Colors.cyan,
@@ -54,16 +52,17 @@ class _MyAppState extends State<MyApp> {
                           setState(() {
                             items.add(_controller.text);
                             _controller.clear();
-                            _messangerKey.currentState?.showSnackBar(
-                                SnackBar(content: Text('Task Added Succesfully',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.white
-                                )),
-                                  backgroundColor: Color(0xff3695f7),
-                                ));
-
+                            _messangerKey.currentState?.showSnackBar(SnackBar(
+                              content: Text('Task Added Succesfully',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white)),
+                              backgroundColor: Color(0xff3695f7),
+                              duration: Duration(
+                                seconds: 1,
+                              ),
+                            ));
                           });
                         },
                         icon: Icon(Icons.add)),
@@ -101,16 +100,16 @@ class _MyAppState extends State<MyApp> {
                             onPressed: () {
                               setState(() {
                                 items.removeAt(index);
-                                _messangerKey.currentState?.showSnackBar(
-                                    SnackBar(content: Text('Task Deleted',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                      color: Colors.black
-                                    )),
-                                      backgroundColor: Color(0xffF92049),
-                                    ));
-
+                                _messangerKey.currentState
+                                    ?.showSnackBar(SnackBar(
+                                  content: Text('Task Deleted',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400,
+                                          color: Colors.black)),
+                                  backgroundColor: Color(0xffF92049),
+                                  duration: Duration(seconds: 1),
+                                ));
                               });
                             },
                             icon: Icon(Icons.delete),
@@ -136,4 +135,3 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
-
