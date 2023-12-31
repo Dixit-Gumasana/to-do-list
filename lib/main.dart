@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:todo_list/todo.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Spalsh.dart';
 
-void main() {
+SharedPreferences? sharedPreferences;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  sharedPreferences = await SharedPreferences.getInstance();
   runApp(const MyApp());
 }
 
@@ -17,7 +19,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-
+@override
+  void initState() {
+      var items = sharedPreferences?.getString("items");
+       super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

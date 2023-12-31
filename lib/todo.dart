@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_list/main.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({super.key});
@@ -15,6 +17,13 @@ class _ToDoState extends State<ToDo> {
   TextEditingController _taskController = TextEditingController();
 
   List items = [];
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +38,9 @@ class _ToDoState extends State<ToDo> {
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
-      backgroundColor: Colors.purpleAccent.withOpacity(0.4),
+      backgroundColor: Colors.lightBlue.shade200,
       body: Container(
-        margin: EdgeInsets.all(10),
+        margin: EdgeInsets.all(12),
         decoration: BoxDecoration(
             border: Border.all(
                 color: Colors.black54,
@@ -71,11 +80,14 @@ class _ToDoState extends State<ToDo> {
                             setState(() {
                               if (_formKey.currentState!.validate()) {
                                 items.add(_taskController.text);
+                                sharedPreferences?.setString("items", _taskController.text);
+
                                 _taskController.clear();
+                                FocusScope.of(context).unfocus();
                                 Fluttertoast.showToast(
                                     msg: "Task Added Successfully!",
-                                    backgroundColor: Color(0xff36D1DC),
-                                    textColor: Colors.black45);
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.black54);
                               }
                             });
                           },
@@ -103,7 +115,7 @@ class _ToDoState extends State<ToDo> {
                           Padding(
                             padding: const EdgeInsets.only(left: 10),
                             child: Text(
-                              "~ ${items[index]}",
+                              "${index+1}. ${items[index]}",
                               style: TextStyle(
                                   fontSize: 17,
                                   fontWeight: FontWeight.w400,
@@ -118,8 +130,8 @@ class _ToDoState extends State<ToDo> {
                                 items.removeAt(index);
                                 Fluttertoast.showToast(
                                     msg: "Task Deleted!",
-                                    backgroundColor: Color(0xff36D1DC),
-                                    textColor: Colors.red);
+                                    backgroundColor: Colors.blue,
+                                    textColor: Colors.black54);
                               });
                             },
                             icon: Icon(Icons.delete),
@@ -131,7 +143,7 @@ class _ToDoState extends State<ToDo> {
                         indent: 10,
                         endIndent: 10,
                         height: 2,
-                        color: Color(0xff8593a1),
+                        color: Colors.black54,
                       ),
                       SizedBox(height: 15),
                     ],
