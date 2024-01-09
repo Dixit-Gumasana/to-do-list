@@ -23,6 +23,9 @@ class _ToDoState extends State<ToDo> {
 
   @override
   void initState() {
+    setState(() {
+
+    });
     if (sharedPreferences!.getString("list") != null &&
         sharedPreferences!.getString("time") != null &&
         sharedPreferences!.getString("time1") != null) {
@@ -50,11 +53,13 @@ class _ToDoState extends State<ToDo> {
             padding: const EdgeInsets.only(right: 10),
             child: InkWell(
                 onTap: () {
+                  setState(() {
+
+                  });
                   if (sharedPreferences!.getString("list") != null &&
                       sharedPreferences!.getString("time") != null &&
                       sharedPreferences!.getString("time1") != null) {
                     sharedPreferences?.clear();
-
                     Fluttertoast.showToast(
                         msg: "List Cleared",
                         backgroundColor: Colors.blue,
@@ -165,9 +170,9 @@ class _ToDoState extends State<ToDo> {
                             child: Text(
                               "${index + 1}. ${items[index]}",
                               style: TextStyle(
-                                  fontSize: 17,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.w500,
-                                  color: Colors.black),
+                                  color: Colors.black.withOpacity(0.8)),
                             ),
                           ),
                           Spacer(),
