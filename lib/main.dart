@@ -20,11 +20,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-@override
-  void initState() {
-      var items = sharedPreferences?.getString("items");
-       super.initState();
-  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -1,8 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:todo_list/main.dart';
 import 'package:intl/intl.dart';
+import 'package:todo_list/main.dart';
 
 class ToDo extends StatefulWidget {
   const ToDo({super.key});
@@ -16,30 +17,67 @@ class _ToDoState extends State<ToDo> {
 
   TextEditingController _taskController = TextEditingController();
 
-   List items = [];
-   List time = [];
+  List items = [];
+  List time = [];
   List time1 = [];
-
-
 
   @override
   void initState() {
+    if (sharedPreferences!.getString("list") != null &&
+        sharedPreferences!.getString("time") != null &&
+        sharedPreferences!.getString("time1") != null) {
+      items = jsonDecode(sharedPreferences!.getString("list").toString());
+      time = jsonDecode(sharedPreferences!.getString("time").toString());
+      time1 = jsonDecode(sharedPreferences!.getString("time1").toString());
+    }
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    // var time = DateTime.now();
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'To Do List',
+          'Tasks',
           style: TextStyle(
               fontSize: 25, fontWeight: FontWeight.w600, color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: Colors.blue,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: InkWell(
+                onTap: () {
+                  if (sharedPreferences!.getString("list") != null &&
+                      sharedPreferences!.getString("time") != null &&
+                      sharedPreferences!.getString("time1") != null) {
+                    sharedPreferences?.clear();
+
+                    Fluttertoast.showToast(
+                        msg: "List Cleared",
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.black54);
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ToDo(),
+                        ));
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "Nothing to Clear 😢",
+                        backgroundColor: Colors.blue,
+                        textColor: Colors.black54);
+                  }
+                },
+                child: Icon(
+                  Icons.cleaning_services,
+                  color: Colors.black54,
+                )),
+          )
+        ],
+        leading: Icon(Icons.account_circle_outlined,size: 27,color: Colors.black54),
       ),
       backgroundColor: Colors.lightBlue.shade200,
       body: Container(
@@ -65,28 +103,39 @@ class _ToDoState extends State<ToDo> {
                   keyboardType: TextInputType.emailAddress,
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
+                      hintText: "Enter your task here",
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10)),
                           borderSide: BorderSide(color: Colors.black)),
-                      label: Text('Enter your task here',
-                          style: TextStyle(color: Colors.black)),
+                      // label: Text('Enter your task here',
+                      //     style: TextStyle(color: Colors.black)),
                       suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
                               if (_formKey.currentState!.validate()) {
                                 items.add(_taskController.text);
-                                // sharedPreferences?.setString(
-                                //     "items", _taskController.text);
+                                sharedPreferences?.setString(
+                                    "list", jsonEncode(items));
+                                debugPrint(
+                                    "----List-->>>> ${jsonDecode(sharedPreferences!.getString("list").toString())}");
                                 _taskController.clear();
                                 FocusScope.of(context).unfocus();
                                 Fluttertoast.showToast(
                                     msg: "Task Added Successfully!",
                                     backgroundColor: Colors.blue,
                                     textColor: Colors.black54);
-                                 time.add(DateFormat("yMMMMd").format(DateTime.now()));
-                                time1.add(DateFormat("Hm").format(DateTime.now()));
-
-                                // debugPrint("---$time");
+                                time.add(DateFormat("yMMMMd")
+                                    .format(DateTime.now()));
+                                sharedPreferences?.setString(
+                                    "time", jsonEncode(time));
+                                debugPrint(
+                                    "----Time-->>>> ${jsonDecode(sharedPreferences!.getString("time").toString())}");
+                                time1.add(
+                                    DateFormat("Hm").format(DateTime.now()));
+                                sharedPreferences?.setString(
+                                    "time1", jsonEncode(time1));
+                                debugPrint(
+                                    "----Time1-->>>> ${jsonDecode(sharedPreferences!.getString("time1").toString())}");
                               }
                             });
                           },
@@ -142,10 +191,9 @@ class _ToDoState extends State<ToDo> {
                           alignment: Alignment.topLeft,
                           child: Padding(
                             padding: const EdgeInsets.only(left: 20),
-                            child: Text("Created at : ${time1[index]} on ${time[index]}",
-                            style: TextStyle(
-                              fontSize: 12
-                            )),
+                            child: Text(
+                                "Created at : ${time1[index]} on ${time[index]}",
+                                style: TextStyle(fontSize: 12)),
                           )),
                       Divider(
                         indent: 10,
